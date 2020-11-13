@@ -1126,8 +1126,35 @@ public class Database implements AutoCloseable {
         @Override
         public void close() {
             try {
-                // TODO(proj4_part2)
-                return;
+                List<Lock> locks = lockManager.getLocks(this);
+                Collections.reverse(locks);
+                for (Lock lock : locks) {
+                    LockContext lockContext = LockContext.fromResourceName(lockManager, lock.name);
+                    LockContext child = lockContext.childContext(transNum);
+                    if (lock.lockType.equals(LockType.S) || lock.lockType.equals(LockType.X)) {
+                        lockContext.release(this);
+                    }
+                }
+                //locks = lockManager.getLocks(this);
+                //Collections.reverse(locks);
+                for (Lock lock : locks) {
+                    LockContext lockContext = LockContext.fromResourceName(lockManager, lock.name);
+                    LockContext child = lockContext.childContext(transNum);
+                    if (lock.lockType.equals(LockType.IS) || lock.lockType.equals(LockType.IX)) {
+                        lockContext.release(this);
+                    }
+                }
+               //locks = lockManager.getLocks(this);
+                //Collections.reverse(locks);
+                for (Lock lock : locks) {
+                    LockContext lockContext = LockContext.fromResourceName(lockManager, lock.name);
+                    LockContext child = lockContext.childContext(transNum);
+                    if (lock.lockType.equals(LockType.SIX)) {
+                        lockContext.release(this);
+                    }
+                }
+                deleteAllTempTables();
+                clearAliasMap();
             } catch (Exception e) {
                 // There's a chance an error message from your release phase
                 // logic can get suppressed. This guarantees that the stack
@@ -1211,7 +1238,8 @@ public class Database implements AutoCloseable {
         }
     }
 
-    private class TransactionImpl extends AbstractTransaction {
+    private class TransactionImpl extends AbstractTransaction
+    {
         private long transNum;
         private boolean recoveryTransaction;
         private TransactionContext transactionContext;

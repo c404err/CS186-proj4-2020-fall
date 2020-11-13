@@ -167,6 +167,7 @@ public class TestDatabase2PL {
     @Test
     @Category(PublicTests.class)
     public void testRecordRead() {
+
         String tableName = "testTable1";
         List<RecordId> rids = createTable(tableName, 4);
         lockManager.startLog();
