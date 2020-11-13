@@ -30,7 +30,7 @@ public class LockUtil {
      */
     public static void ensureSufficientLockHeld(LockContext lockContext, LockType requestType) {
         // requestType must be S, X, or NL
-        assert (requestType == LockType.S || requestType == LockType.X || requestType == LockType.NL);
+        // assert (requestType == LockType.S || requestType == LockType.X || requestType == LockType.NL);
 
         // Do nothing if the transaction or lockContext is null
         TransactionContext transaction = TransactionContext.getTransaction();
