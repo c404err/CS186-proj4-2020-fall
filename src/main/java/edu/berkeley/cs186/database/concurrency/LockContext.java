@@ -228,7 +228,6 @@ public class LockContext {
 
         boolean locker = true;
         LockType eType = LockType.S;
-        //List<Lock> locks = lockman.getLocks(transaction);
         LinkedList<ResourceName> names = new LinkedList<>();
 
         for (Lock lock : lockman.getLocks(transaction)) {
@@ -304,29 +303,6 @@ public class LockContext {
             return LockType.S;
         }
         return prevType;
-    }
-
-    /**
-     * Helper method to see if the transaction holds a SIX lock at an ancestor
-     * of this context
-     * @param transaction the transaction
-     * @return true if holds a SIX at an ancestor, false if not
-     */
-    private boolean hasSIXAncestor(TransactionContext transaction) {
-        // TODO(proj4_part2): implement
-        return false;
-    }
-
-    /**
-     * Helper method to get a list of resourceNames of all locks that are S or
-     * IS and are descendants of current context for the given transaction.
-     * @param transaction the given transaction
-     * @return a list of ResourceNames of descendants which the transaction
-     * holds an S or IS lock.
-     */
-    private List<ResourceName> sisDescendants(TransactionContext transaction) {
-        // TODO(proj4_part2): implement
-        return new ArrayList<>();
     }
 
     /**

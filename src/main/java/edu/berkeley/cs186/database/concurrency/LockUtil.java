@@ -30,7 +30,7 @@ public class LockUtil {
      */
     public static void ensureSufficientLockHeld(LockContext lockContext, LockType requestType) {
         // requestType must be S, X, or NL
-        //assert (requestType.equals(LockType.S) || requestType.equals(LockType.X) || requestType.equals(LockType.NL));
+        assert (requestType == LockType.S || requestType == LockType.X || requestType == LockType.NL);
 
         // Do nothing if the transaction or lockContext is null
         TransactionContext transaction = TransactionContext.getTransaction();
@@ -42,6 +42,7 @@ public class LockUtil {
 
         // TODO(proj4_part2): implement
 
+        if (requestType.equals(effectiveLockType)) return;
         if (LockType.substitutable(effectiveLockType, requestType)) return;
 
 
@@ -65,6 +66,7 @@ public class LockUtil {
                 lockContext.promote(transaction, requestType);
             }
         }
+
     }
 
     // TODO(proj4_part2) add any helper methods you want

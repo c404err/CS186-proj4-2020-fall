@@ -1130,26 +1130,7 @@ public class Database implements AutoCloseable {
                 Collections.reverse(locks);
                 for (Lock lock : locks) {
                     LockContext lockContext = LockContext.fromResourceName(lockManager, lock.name);
-                    LockContext child = lockContext.childContext(transNum);
-                    if (lock.lockType.equals(LockType.S) || lock.lockType.equals(LockType.X)) {
-                        lockContext.release(this);
-                    }
-                }
-                //locks = lockManager.getLocks(this);
-                //Collections.reverse(locks);
-                for (Lock lock : locks) {
-                    LockContext lockContext = LockContext.fromResourceName(lockManager, lock.name);
-                    LockContext child = lockContext.childContext(transNum);
-                    if (lock.lockType.equals(LockType.IS) || lock.lockType.equals(LockType.IX)) {
-                        lockContext.release(this);
-                    }
-                }
-               //locks = lockManager.getLocks(this);
-                //Collections.reverse(locks);
-                for (Lock lock : locks) {
-                    LockContext lockContext = LockContext.fromResourceName(lockManager, lock.name);
-                    LockContext child = lockContext.childContext(transNum);
-                    if (lock.lockType.equals(LockType.SIX)) {
+                    if (lockContext.getNumChildren(this) == 0 && lock.lockType != LockType.NL) {
                         lockContext.release(this);
                     }
                 }
